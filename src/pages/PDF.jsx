@@ -20,7 +20,7 @@ const PDF = () => {
   const handleClose = () => {
     console.log(file);
     axios.post(
-      "http://localhost:8000/uploadbook",
+      "https://backend-again-lhoh.onrender.com/uploadbook",
       {
         name: name,
         departmentname: departmentname,
@@ -42,9 +42,11 @@ const PDF = () => {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:8000/allbook").then((data) => {
-      setBookslist(data.data);
-    });
+    axios
+      .get("https://backend-again-lhoh.onrender.com/allbook")
+      .then((data) => {
+        setBookslist(data.data);
+      });
   }, []);
 
   return (
@@ -113,7 +115,14 @@ const PDF = () => {
                 <td>Mark</td>
                 <td>Otto</td>
                 <td>@mdo</td>
-                <td><Link to={`http://localhost:8000/${item.url}`} target="_blank">Read</Link></td>
+                <td>
+                  <Link
+                    to={`https://backend-again-lhoh.onrender.com/${item.url}`}
+                    target="_blank"
+                  >
+                    Read
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>

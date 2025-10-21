@@ -18,69 +18,72 @@ const Student = () => {
   const [phonenumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [studentList, setStudentList] = useState([]);
-  let [update,setUpdate]= useState(false)
+  let [update, setUpdate] = useState(false);
 
   const handleClose = () => {
     setLoading(true);
     axios
-      .post("http://localhost:8000/createstudent", {
+      .post("https://backend-again-lhoh.onrender.com/createstudent", {
         studentname: studentname,
         departmentname: departmentname,
         studentid: studentid,
         phonenumber: phonenumber,
       })
       .then(() => {
-        axios.get("http://localhost:8000/allstudent").then((data) => {
-          setStudentList(data.data);
-          setLoading(false);
-        setShow(false);
-        });
-        
+        axios
+          .get("https://backend-again-lhoh.onrender.com/allstudent")
+          .then((data) => {
+            setStudentList(data.data);
+            setLoading(false);
+            setShow(false);
+          });
       });
   };
   const handleCloseForUpdate = () => {
-    console.log("hello",studentid)
+    console.log("hello", studentid);
     setLoading(true);
     axios
-      .patch(`http://localhost:8000/student/${studentid}`, {
+      .patch(`https://backend-again-lhoh.onrender.com/student/${studentid}`, {
         studentname: studentname,
         departmentname: departmentname,
         studentid: studentid,
         phonenumber: phonenumber,
       })
       .then(() => {
-        axios.get("http://localhost:8000/allstudent").then((data) => {
-          setStudentList(data.data);
-          setLoading(false);
-        setShow(false);
-        });
-        
+        axios
+          .get("https://backend-again-lhoh.onrender.com/allstudent")
+          .then((data) => {
+            setStudentList(data.data);
+            setLoading(false);
+            setShow(false);
+          });
       });
   };
 
   const handleCloseModal = () => {
-        setShow(false);
-        setUpdate(false)
+    setShow(false);
+    setUpdate(false);
   };
-  const handleShow = () =>{
-    setDepartmentname("")
-      setPhoneNumber("")
-      setStudentid("")
-      setStudentName("")
-     setShow(true)
+  const handleShow = () => {
+    setDepartmentname("");
+    setPhoneNumber("");
+    setStudentid("");
+    setStudentName("");
+    setShow(true);
   };
   const handleShowModal = (id) => {
-    setUpdate(true)
-    axios.get(`http://localhost:8000/student/${id}`).then((data)=>{
-      console.log(data.data[0])
-      setDepartmentname(data.data[0].departmentname)
-      setPhoneNumber(data.data[0].phonenumber)
-      setStudentid(data.data[0].studentid)
-      setStudentName(data.data[0].studentname)
-      setStudentid(data.data[0]._id)
-
-    })
-    setShow(true)
+    setUpdate(true);
+    axios
+      .get(`https://backend-again-lhoh.onrender.com/student/${id}`)
+      .then((data) => {
+        console.log(data.data[0]);
+        setDepartmentname(data.data[0].departmentname);
+        setPhoneNumber(data.data[0].phonenumber);
+        setStudentid(data.data[0].studentid);
+        setStudentName(data.data[0].studentname);
+        setStudentid(data.data[0]._id);
+      });
+    setShow(true);
   };
 
   useEffect(() => {
@@ -92,21 +95,27 @@ const Student = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/allstudent").then((data) => {
-      setStudentList(data.data);
-    });
+    axios
+      .get("https://backend-again-lhoh.onrender.com/allstudent")
+      .then((data) => {
+        setStudentList(data.data);
+      });
   }, []);
 
-  let handleDelete = (id)=>{
-    console.log(id)
-    axios.post("http://localhost:8000/delete",{
-      id: id
-    }).then(()=>{
-      axios.get("http://localhost:8000/allstudent").then((data) => {
-          setStudentList(data.data);
-        });
-    })
-  }
+  let handleDelete = (id) => {
+    console.log(id);
+    axios
+      .post("https://backend-again-lhoh.onrender.com/delete", {
+        id: id,
+      })
+      .then(() => {
+        axios
+          .get("https://backend-again-lhoh.onrender.com/allstudent")
+          .then((data) => {
+            setStudentList(data.data);
+          });
+      });
+  };
 
   return (
     <div className="main">
@@ -163,36 +172,36 @@ const Student = () => {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-
-            {update 
-            
-            ?
-             <Button disabled={loading} variant="primary" onClick={handleCloseForUpdate}>
-              {loading ? (
-                <Spinner animation="border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>
-              ) : (
-                "Update Student"
-              )}
-            </Button>
-            :
-            <Button disabled={loading} variant="primary" onClick={handleClose}>
-              {loading ? (
-                <Spinner animation="border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>
-              ) : (
-                "Create Student"
-              )}
-            </Button>
-            }
-            
-
-            
+            {update ? (
+              <Button
+                disabled={loading}
+                variant="primary"
+                onClick={handleCloseForUpdate}
+              >
+                {loading ? (
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                ) : (
+                  "Update Student"
+                )}
+              </Button>
+            ) : (
+              <Button
+                disabled={loading}
+                variant="primary"
+                onClick={handleClose}
+              >
+                {loading ? (
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                ) : (
+                  "Create Student"
+                )}
+              </Button>
+            )}
           </Modal.Footer>
-
-          
         </Modal>
 
         {/* table */}
@@ -203,21 +212,29 @@ const Student = () => {
               <th>Student Name</th>
               <th>Department</th>
               <th>Phone Number</th>
-              <th>
-                Actions
-              </th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {studentList.map((item,index) => (
+            {studentList.map((item, index) => (
               <tr>
-                <td>{index+1}</td>
+                <td>{index + 1}</td>
                 <td>{item.studentname}</td>
                 <td>{item.departmentname}</td>
                 <td>{item.phonenumber}</td>
                 <td>
-                  <Button variant="primary" onClick={()=>handleShowModal(item._id)}>Edit</Button>
-                  <Button variant="danger" onClick={()=> handleDelete(item._id)}>Delete</Button>
+                  <Button
+                    variant="primary"
+                    onClick={() => handleShowModal(item._id)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(item._id)}
+                  >
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}
